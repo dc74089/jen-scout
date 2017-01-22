@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="events">
+        <item>2016 Orlando Regional</item>
+        <item>2016 Rocket City Regional</item>
+    </array>
+</resources>

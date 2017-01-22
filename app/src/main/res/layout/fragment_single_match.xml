@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_weight="0">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/smComp"
+            android:hint="Comp. Code"
+            android:layout_weight="1"
+            android:focusable="false"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/smMatch"
+            android:layout_weight="1"
+            android:hint="Match" />
+
+        <Button
+            android:text="Go."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smGo"
+            android:layout_weight="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smRedOne"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@color/frc_red" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smRedTwo"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@color/frc_red" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smRedThree"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@color/frc_red" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smBlueOne"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@color/frc_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smBlueTwo"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@color/frc_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smBlueThree"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@color/frc_blue" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="0"
+        android:background="@color/colorAccent"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/smTable">
+        </TableLayout>
+
+    </ScrollView>
+
+</LinearLayout>
