@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,8 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SingleMatchFinder"></activity>
-        <activity android:name=".PowerRatings"></activity>
+
+        <activity android:name=".SingleMatchFinder"
+            android:label="Match Details"/>
+
+        <activity android:name=".PowerRatings"
+            android:label="Power Ratings"/>
+
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PowerRatings extends AppCompatActivity implements BlueRequester, View.OnClickListener, Dialog.OnClickListener {
+    //TODO: Formulas for Steamworks, specified by Jen
     PowerCalc powerCalc;
     SynchronousBlueAPI sApi;
     EditText comp, stat;
@@ -92,7 +94,11 @@ public class PowerRatings extends AppCompatActivity implements BlueRequester, Vi
                     teamTV.setLayoutParams(layoutParams);
                     powerTV.setLayoutParams(layoutParams);
 
-                    rankTV.setText(""+i);
+                    rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                    teamTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                    powerTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+                    rankTV.setText(""+i+":");
                     rankTV.setTypeface(Typeface.DEFAULT_BOLD);
                     teamTV.setText(""+teamNo);
                     powerTV.setText(""+Math.round(results.get(teamNo)*1000d)/1000d);

@@ -5,7 +5,7 @@
     android:gravity="center_vertical|center_horizontal">
 
     <Button
-        android:text="Single Match"
+        android:text="Single Match\nDetails"
         android:layout_height="wrap_content"
         android:id="@+id/homeSingle"
         android:layout_width="wrap_content" />
