@@ -1,6 +1,5 @@
 package com.vegetarianbaconite.jenscout;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,7 +34,7 @@ public class SingleMatchFinder extends AppCompatActivity implements View.OnClick
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_single_match);
+        setContentView(R.layout.single_match);
         api = new AsyncBlueAPI(this, "DominicCanora", "JenScout", "1");
 
         comp = (EditText) findViewById(R.id.smComp);
@@ -120,16 +119,6 @@ public class SingleMatchFinder extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        switch (i) {
-            case 0:
-                comp.setText("2016flor");
-                break;
-            case 1:
-                comp.setText("2016alhu");
-                break;
-            default:
-                comp.setText("");
-                break;
-        }
+        comp.setText(getResources().getStringArray(R.array.eventKeys)[i]);
     }
 }
