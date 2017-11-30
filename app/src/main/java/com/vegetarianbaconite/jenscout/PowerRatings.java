@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -13,15 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dominicc.me.PowerCalc;
-import com.vegetarianbaconite.blueapi.BlueRequester;
-import com.vegetarianbaconite.blueapi.SynchronousBlueAPI;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,10 +25,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class PowerRatings extends AppCompatActivity implements BlueRequester, View.OnClickListener, Dialog.OnClickListener {
+import io.swagger.client.ApiException;
+
+public class PowerRatings extends AppCompatActivity implements View.OnClickListener, Dialog.OnClickListener {
     //TODO: Formulas for Steamworks, specified by Jen
     PowerCalc powerCalc;
-    SynchronousBlueAPI sApi;
+
     EditText comp, stat;
     Button go;
     TableLayout table;
@@ -48,8 +46,6 @@ public class PowerRatings extends AppCompatActivity implements BlueRequester, Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.power_ratings);
 
-        sApi = new SynchronousBlueAPI("DominicCanora", "JenScout", "1");
-
         comp = (EditText) findViewById(R.id.prComp);
         stat = (EditText) findViewById(R.id.prStat);
         go = (Button) findViewById(R.id.prGo);
@@ -58,16 +54,6 @@ public class PowerRatings extends AppCompatActivity implements BlueRequester, Vi
         comp.setOnClickListener(this);
         stat.setOnClickListener(this);
         go.setOnClickListener(this);
-    }
-
-    @Override
-    public void onResponse(String s) {
-
-    }
-
-    @Override
-    public void onError(Exception e) {
-
     }
 
     public void handleResults(final Map<Integer, Double> results) {
@@ -175,14 +161,19 @@ public class PowerRatings extends AppCompatActivity implements BlueRequester, Vi
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    powerCalc = new PowerCalc(comp.getText().toString(), true);
-                    stats.addAll(sApi.getMatch(comp.getText().toString(), "qm1").getScoreBreakdown().getRed().keySet());
-                    PowerRatings.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            pd.dismiss();
-                        }
-                    });
+                    try {
+                        powerCalc = new PowerCalc(Secret.apiKey, comp.getText().toString(), true);
+                        stats.addAll(powerCalc.getStats());
+                        PowerRatings.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pd.dismiss();
+                            }
+                        });
+                    } catch (ApiException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }).start();
         } else if (dialogInterface.equals(statDialog)) {

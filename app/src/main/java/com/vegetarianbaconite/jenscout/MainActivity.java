@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.vegetarianbaconite.blueapi.SynchronousBlueAPI;
-
-import org.apache.commons.math3.analysis.function.Power;
+import io.swagger.client.ApiClient;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static SynchronousBlueAPI api = new SynchronousBlueAPI("DominicCanora", "JenScout", "1");
+    public static ApiClient api;
+
+    static {
+        api = new ApiClient();
+        api.setApiKey(Secret.apiKey);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
