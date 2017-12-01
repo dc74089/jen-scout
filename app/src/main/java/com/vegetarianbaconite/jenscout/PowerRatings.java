@@ -172,6 +172,9 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                         });
                     } catch (ApiException e) {
                         e.printStackTrace();
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        pd.dismiss();
+                        Toast.makeText(PowerRatings.this, "It looks like that event doesn't have any match data yet", Toast.LENGTH_SHORT).show();
                     }
 
                 }

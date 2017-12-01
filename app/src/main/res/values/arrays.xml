@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="events">
-        <item>2015 Orlando Regional</item>
-        <item>2015 GA Southern Classic</item>
+        <item>2018 Orlando Regional</item>
+        <item>2018 South FL Regional</item>
+        <item>2017 Orlando Regional</item>
+        <item>2017 Bayou Regional</item>
+        <item>2017 Carver Division</item>
         <item>2016 Orlando Regional</item>
         <item>2016 Rocket City Regional</item>
-        <item>2016 Archimedes Division</item>
-        <item>2016 Carson Division</item>
         <item>2016 Carver Division</item>
-        <item>2016 Curie Division</item>
-        <item>2016 Galileo Division</item>
-        <item>2016 Hopper Division</item>
-        <item>2016 Newton Division</item>
-        <item>2016 Tesla Division</item>
+        <item>2015 Orlando Regional</item>
+        <item>2015 GA Southern Classic</item>
     </array>
 
     <array name="eventKeys">
-        <item>2015flor</item>
-        <item>2015gape</item>
+        <item>2018flor</item>
+        <item>2018flwp</item>
+        <item>2017flor</item>
+        <item>2017lake</item>
+        <item>2017carv</item>
         <item>2016flor</item>
         <item>2016alhu</item>
-        <item>2016arc</item>
-        <item>2016cars</item>
         <item>2016carv</item>
-        <item>2016cur</item>
-        <item>2016gal</item>
-        <item>2016hop</item>
-        <item>2016new</item>
-        <item>2016tes</item>
+        <item>2015flor</item>
+        <item>2015gape</item>
     </array>
 </resources>

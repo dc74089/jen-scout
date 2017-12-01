@@ -31,7 +31,7 @@ public class SingleMatchFinder extends AppCompatActivity implements View.OnClick
     Button go;
     TableLayout t;
 
-    MatchApi api = new MatchApi(MainActivity.api);
+    MatchApi api = new MatchApi(Utils.api);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
