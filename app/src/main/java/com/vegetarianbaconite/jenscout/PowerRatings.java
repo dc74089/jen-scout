@@ -16,7 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.dominicc.me.PowerCalc;
+import com.vegetarianbaconite.powercalc.PowerCalc;
+import com.vegetarianbaconite.powercalc.exceptions.NoMatchesException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
     TableLayout table;
 
     ArrayList<String> stats;
-    Dialog compDialog, statDialog;
+    Dialog yearDialog, compDialog, statDialog;
     ProgressDialog pd;
 
     @Override
@@ -95,7 +96,12 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.prComp) { //Set Competition
+        if (view.getId() == R.id.prYear) { //Set Year
+            yearDialog = new AlertDialog.Builder(this)
+                    .setTitle("Select Year")
+                    .setItems(R.array.years, this)
+                    .show();
+        } else if (view.getId() == R.id.prComp) { //Set Competition
             try {
                 Integer.parseInt(year.getText().toString());
             } catch (NumberFormatException e) {
@@ -118,6 +124,11 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             pd.show();
 
         } else if (view.equals(stat)) { //Set Stat
+            if (comp.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Make sure you've selected a competition and year",
+                        Toast.LENGTH_SHORT).show();
+            }
+
             stat.setText("");
             statDialog = new AlertDialog.Builder(this)
                     .setTitle("Select Stat for Power Rating")
@@ -177,9 +188,20 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
 
                         Log.d("JenScout", "Done fetching teams. Creating Cholesky...");
 
-                        powerCalc = new PowerCalc(Secret.apiKey, e.getKey(), true);
+                        try {
+                            powerCalc = new PowerCalc(Secret.apiKey, e.getKey(), true);
+                        } catch (NoMatchesException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(PowerRatings.this, "It looks like that event hasn't had any qualifying matches yet. ",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
                         stats = new ArrayList<>();
+                        stats.add("opr");
                         stats.addAll(powerCalc.getStats());
 
                         PowerRatings.this.runOnUiThread(new Runnable() {
@@ -193,13 +215,23 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     } catch (ArrayIndexOutOfBoundsException e) {
                         pd.dismiss();
-                        Toast.makeText(PowerRatings.this, "It looks like that event doesn't have any match data yet", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(PowerRatings.this,
+                                        "It looks like that event doesn't have any match data yet",
+                                        Toast.LENGTH_SHORT).show();
+                                comp.setText("");
+                            }
+                        });
                     }
 
                 }
             }).start();
         } else if (dialogInterface.equals(statDialog)) {
             stat.setText(stats.get(i));
+        } else if (dialogInterface.equals(yearDialog)) {
+            year.setText("" + (2016 + i));
         }
     }
 
@@ -208,7 +240,9 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         nameEventMap = new TreeMap<>();
 
         for (Event e : events) {
-            nameEventMap.put(e.getShortName(), e);
+            //IDK why all these checks are necessary but they are.
+            if (e != null && e.getShortName() != null && !e.getShortName().trim().isEmpty())
+                nameEventMap.put(e.getShortName(), e);
         }
 
         pd.dismiss();

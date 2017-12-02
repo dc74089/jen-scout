@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="years">
+        <item>2016: Stronghold</item>
+        <item>2017: Steamworks</item>
+        <item>2018: Power Up</item>
+    </array>
+
     <array name="events">
         <item>2018 Orlando Regional</item>
         <item>2018 South FL Regional</item>
