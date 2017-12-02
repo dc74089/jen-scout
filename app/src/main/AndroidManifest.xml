@@ -12,7 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+
+        <activity android:name=".SingleMatchFinder"
+            android:label="Match Details"/>
+
+        <activity android:name=".PowerRatings"
+            android:label="Power Ratings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,12 +26,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SingleMatchFinder"
-            android:label="Match Details"/>
 
-        <activity android:name=".PowerRatings"
-            android:label="Power Ratings"/>
-
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="93335f0e1bb9497f803c5a938042631007acb073" />
     </application>
 
 </manifest>

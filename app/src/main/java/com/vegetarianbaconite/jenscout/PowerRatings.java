@@ -15,17 +15,17 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.dominicc.me.PowerCalc;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import io.fabric.sdk.android.Fabric;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.EventApi;
@@ -51,6 +51,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.power_ratings);
 
         year = findViewById(R.id.prYear);
@@ -69,21 +70,12 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                List<Integer> teamNums = new ArrayList<>(results.keySet());
-
-                Collections.sort(teamNums, new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer val1, Integer val2) {
-                        return (int) Math.round(1000 * (results.get(val2) - results.get(val1)));
-                    }
-                });
-
                 LayoutInflater inflater = getLayoutInflater();
                 table.removeAllViews();
 
                 int i = 1;
 
-                for (Integer teamNo : teamNums) {
+                for (Integer teamNo : results.keySet()) {
                     View row = inflater.inflate(R.layout.power_rating_table_row, table, false);
 
                     ((TextView) row.findViewById(R.id.prtrRank)).setText(i + ":");
@@ -99,54 +91,6 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                 pd.dismiss();
             }
         });
-
-
-        /*
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                table.removeAllViews();
-
-                List<Integer> teamNums = new ArrayList<>(results.keySet());
-                Collections.sort(teamNums, new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer val1, Integer val2) {
-                        return (int) Math.round(1000 *(results.get(val2) - results.get(val1)));
-                    }
-                });
-                int i = 1;
-                for (Integer teamNo : teamNums) {
-                    TableRow tr = new TableRow(PowerRatings.this);
-                    TextView rankTV = new TextView(PowerRatings.this);
-                    TextView teamTV = new TextView(PowerRatings.this);
-                    TextView powerTV = new TextView(PowerRatings.this);
-
-                    rankTV.setLayoutParams(layoutParams);
-                    teamTV.setLayoutParams(layoutParams);
-                    powerTV.setLayoutParams(layoutParams);
-
-                    rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                    teamTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                    powerTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-
-                    rankTV.setText(""+i+":");
-                    rankTV.setTypeface(Typeface.DEFAULT_BOLD);
-                    teamTV.setText(""+teamNo);
-                    powerTV.setText(""+Math.round(results.get(teamNo)*1000d)/1000d);
-
-                    tr.addView(rankTV);
-                    tr.addView(teamTV);
-                    tr.addView(powerTV);
-
-                    table.addView(tr);
-
-                    i++;
-                }
-
-                pd.dismiss();
-            }
-        });
-        */
     }
 
     @Override
@@ -191,10 +135,11 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     try {
-                        Map<Integer, Double> results = powerCalc.getForKey(stat.getText().toString());
+                        Map<Integer, Double> results = powerCalc.getForKeySorted(stat.getText().toString());
                         handleResults(results);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        Crashlytics.logException(e);
                         PowerRatings.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -216,7 +161,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             comp.setText(e.getShortName());
 
             pd = new ProgressDialog(this);
-            pd.setMessage("Please wait, creating match matrix. This involves a lot of math, and can take up to 90 seconds. ");
+            pd.setMessage("Please wait, creating match matrix. This involves a lot of math, and can take up to 30 seconds. ");
             pd.setIndeterminate(true);
             pd.setCancelable(false);
             pd.show();
@@ -244,6 +189,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                     } catch (ApiException e) {
+                        Crashlytics.logException(e);
                         e.printStackTrace();
                     } catch (ArrayIndexOutOfBoundsException e) {
                         pd.dismiss();
