@@ -21,14 +21,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setTeam.setOnClickListener(this);
 
-        /*
-        if(!prefs.contains("team")) {
-            prefs.edit().putInt("team", 1902).apply();
-        } else {
-            teamNo.setText(prefs.getInt("team", 0));
-        }
-        */
-
         findViewById(R.id.homeSingle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

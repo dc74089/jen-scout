@@ -4,20 +4,37 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/prYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Year"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/prComp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="Comp. Code" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_weight="0">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/prComp"
-            android:hint="Comp. Code"
-            android:layout_weight="1"
-            android:focusable="false"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -29,11 +46,11 @@
             android:focusable="false"/>
 
         <Button
-            android:text="Go."
+            android:id="@+id/prGo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/prGo"
-            android:layout_weight="0" />
+            android:layout_weight="0"
+            android:text="Go" />
     </LinearLayout>
 
     <View
