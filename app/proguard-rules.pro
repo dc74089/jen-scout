@@ -20,3 +20,9 @@
 -keepattributes SourceFile,LineNumberTable
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+-keep class org.joda.convert.** { *; }
+-dontwarn org.joda.convert.**
+
+-dontwarn java.awt.geom.**
+-dontwarn org.codehaus.mojo.animal_sniffer.**

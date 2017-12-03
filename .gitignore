@@ -11,4 +11,6 @@ gradlew
 gradlew.bat
 gradle.properties
 *.apk
-*Secret.java
+
+**/Secret.java
+**/output.json

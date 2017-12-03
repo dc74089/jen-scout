@@ -55,6 +55,12 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.power_ratings);
 
+        try {
+            getSupportActionBar().setTitle("Power Ratings");
+        } catch (NullPointerException e) {
+            Crashlytics.logException(e);
+        }
+
         year = findViewById(R.id.prYear);
         comp = findViewById(R.id.prComp);
         stat = findViewById(R.id.prStat);
@@ -232,6 +238,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             stat.setText(stats.get(i));
         } else if (dialogInterface.equals(yearDialog)) {
             year.setText("" + (2016 + i));
+            comp.setText("");
         }
     }
 
