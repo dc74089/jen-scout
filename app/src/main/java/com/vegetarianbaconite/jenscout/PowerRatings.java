@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.SearchEvent;
 import com.vegetarianbaconite.powercalc.PowerCalc;
 import com.vegetarianbaconite.powercalc.exceptions.NoMatchesException;
 
@@ -175,19 +177,33 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             pd.setCancelable(false);
             pd.show();
 
+            Answers.getInstance().logSearch(new SearchEvent()
+                    .putCustomAttribute("year", year.getText().toString())
+                    .putCustomAttribute("event", comp.getText().toString())
+                    .putCustomAttribute("stat", stat.getText().toString()));
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         Map<Integer, Double> results = powerCalc.getForKeySorted(stat.getText().toString());
                         handleResults(results);
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         e.printStackTrace();
-                        Crashlytics.logException(e);
                         PowerRatings.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(PowerRatings.this, "Please select a numeric field. ",
+                                        Toast.LENGTH_SHORT).show();
+                                pd.dismiss();
+                            }
+                        });
+                    } catch (Exception e) {
+                        Crashlytics.logException(e);
+                        PowerRatings.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(PowerRatings.this, "Oops! That didn't work. ",
                                         Toast.LENGTH_SHORT).show();
                                 pd.dismiss();
                             }
@@ -229,6 +245,16 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                                 public void run() {
                                     Toast.makeText(PowerRatings.this, "It looks like that event hasn't had any qualifying matches yet. ",
                                             Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (Exception e) {
+                            Crashlytics.logException(e);
+                            PowerRatings.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(PowerRatings.this, "Oops, that event is giving us trouble. Try another. ",
+                                            Toast.LENGTH_SHORT).show();
+                                    pd.dismiss();
                                 }
                             });
                         }
