@@ -30,7 +30,6 @@ import io.fabric.sdk.android.Fabric;
 import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.EventApi;
-import io.swagger.client.model.Event;
 import io.swagger.client.model.EventSimple;
 import io.swagger.client.model.Team;
 
@@ -249,8 +248,8 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         nameEventMap = new TreeMap<>();
 
         for (EventSimple e : events) {
-            if (e.getEventType() < 10)
-                if (e != null && e.getName() != null && !e.getName().trim().isEmpty())
+            if (e != null && (e.getEventType() == 0 || e.getEventType() == 1 || e.getEventType() == 3 || e.getEventType() == 5))
+                if (e.getName() != null && !e.getName().trim().isEmpty())
                     nameEventMap.put(e.getName(), e);
         }
 
