@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,6 +74,29 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         comp.setOnClickListener(this);
         stat.setOnClickListener(this);
         go.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menuAbout) {
+            new AlertDialog.Builder(this)
+                    .setTitle("About")
+                    .setView(R.layout.dialog_about)
+                    .setPositiveButton("OK", null)
+                    .show();
+
+            return true;
+        }
+
+        return false;
     }
 
     public void handleResults(final Map<Integer, Double> results) {
