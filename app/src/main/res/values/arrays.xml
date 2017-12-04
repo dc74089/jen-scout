@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="years">
+        <item>2015: Recycle Rush</item>
         <item>2016: Stronghold</item>
         <item>2017: Steamworks</item>
         <item>2018: Power Up</item>

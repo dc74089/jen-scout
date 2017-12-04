@@ -31,14 +31,15 @@ import io.swagger.client.ApiCallback;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.EventApi;
 import io.swagger.client.model.Event;
+import io.swagger.client.model.EventSimple;
 import io.swagger.client.model.Team;
 
 public class PowerRatings extends AppCompatActivity implements View.OnClickListener,
-        Dialog.OnClickListener, ApiCallback<List<Event>> {
+        Dialog.OnClickListener, ApiCallback<List<EventSimple>> {
 
     PowerCalc powerCalc;
     EventApi api = new EventApi(Utils.api);
-    TreeMap<String, Event> nameEventMap;
+    TreeMap<String, EventSimple> nameEventMap;
     Map<Integer, Team> teamMap;
 
     EditText year, comp, stat;
@@ -117,7 +118,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             }
 
             try {
-                api.getEventsByYearAsync(new BigDecimal(year.getText().toString()), null,
+                api.getEventsByYearSimpleAsync(new BigDecimal(year.getText().toString()), null,
                         this);
             } catch (ApiException e) {
                 e.printStackTrace();
@@ -130,9 +131,10 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             pd.show();
 
         } else if (view.equals(stat)) { //Set Stat
-            if (comp.getText().toString().isEmpty()) {
+            if (comp.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Make sure you've selected a competition and year",
                         Toast.LENGTH_SHORT).show();
+                return;
             }
 
             stat.setText("");
@@ -174,8 +176,8 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         if(dialogInterface.equals(compDialog)) {
-            final Event e = (Event) nameEventMap.values().toArray()[i];
-            comp.setText(e.getShortName());
+            final EventSimple e = (EventSimple) nameEventMap.values().toArray()[i];
+            comp.setText(e.getName());
 
             pd = new ProgressDialog(this);
             pd.setMessage("Please wait, creating match matrix. This involves a lot of math, and can take up to 30 seconds. ");
@@ -237,19 +239,19 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         } else if (dialogInterface.equals(statDialog)) {
             stat.setText(stats.get(i));
         } else if (dialogInterface.equals(yearDialog)) {
-            year.setText("" + (2016 + i));
+            year.setText("" + (2015 + i));
             comp.setText("");
         }
     }
 
     @Override
-    public void onSuccess(List<Event> events, int i, Map<String, List<String>> map) {
+    public void onSuccess(List<EventSimple> events, int i, Map<String, List<String>> map) {
         nameEventMap = new TreeMap<>();
 
-        for (Event e : events) {
-            //IDK why all these checks are necessary but they are.
-            if (e != null && e.getShortName() != null && !e.getShortName().trim().isEmpty())
-                nameEventMap.put(e.getShortName(), e);
+        for (EventSimple e : events) {
+            if (e.getEventType() < 10)
+                if (e != null && e.getName() != null && !e.getName().trim().isEmpty())
+                    nameEventMap.put(e.getName(), e);
         }
 
         pd.dismiss();
