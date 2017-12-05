@@ -21,11 +21,12 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.SearchEvent;
-import com.vegetarianbaconite.powercalc.PowerCalc;
+import com.vegetarianbaconite.powercalc.BPRCalculator;
 import com.vegetarianbaconite.powercalc.exceptions.NoMatchesException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import io.swagger.client.model.Team;
 public class PowerRatings extends AppCompatActivity implements View.OnClickListener,
         Dialog.OnClickListener, ApiCallback<List<EventSimple>> {
 
-    PowerCalc powerCalc;
+    BPRCalculator calc;
     EventApi api = new EventApi(Utils.api);
     TreeMap<String, EventSimple> nameEventMap;
     Map<Integer, Team> teamMap;
@@ -110,7 +111,12 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
 
                 int i = 1;
 
-                for (Integer teamNo : results.keySet()) {
+                List<Integer> teamNos = new ArrayList<>(results.keySet());
+
+                if (stat.getText().toString().equalsIgnoreCase("dpr"))
+                    Collections.reverse(teamNos);
+
+                for (Integer teamNo : teamNos) {
                     View row = inflater.inflate(R.layout.power_rating_table_row, table, false);
 
                     ((TextView) row.findViewById(R.id.prtrRank)).setText(i + ":");
@@ -124,6 +130,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                 }
 
                 pd.dismiss();
+
             }
         });
     }
@@ -186,7 +193,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     try {
-                        Map<Integer, Double> results = powerCalc.getForKeySorted(stat.getText().toString());
+                        Map<Integer, Double> results = calc.getForKeySorted(stat.getText().toString());
                         handleResults(results);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -238,7 +245,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                         Log.d("JenScout", "Done fetching teams. Creating Cholesky...");
 
                         try {
-                            powerCalc = new PowerCalc(Secret.apiKey, e.getKey(), true);
+                            calc = new BPRCalculator(Secret.apiKey, e.getKey(), true);
                         } catch (NoMatchesException e) {
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -261,7 +268,9 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
 
                         stats = new ArrayList<>();
                         stats.add("opr");
-                        stats.addAll(powerCalc.getStats());
+                        stats.add("dpr");
+                        stats.add("ccwm");
+                        stats.addAll(calc.getStats());
 
                         PowerRatings.this.runOnUiThread(new Runnable() {
                             @Override

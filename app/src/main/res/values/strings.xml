@@ -3,7 +3,7 @@
     <string name="about">BPR is a new power metric for the FIRST Robotics Competition.
         BPR shows a team\'s average contribution to a specific scoring target. BPR allows you to look at data beyond a team\'s estimated contribution to their alliance\'s score.
         \n\nA team\'s BPR in a scoring area shows the team\'s average contribution to that specific scoring area. For example, a Steamworks robot that scored a large number of points spending the entirety of every match dumping fuel into the low goal would have a high low-goal BPR but a low climbing and rotor BPR.
-        \n\nThe BPR app is open-source at https://github.com/dc74089/jen-scout. The app is a thin Android GUI for an open-source Java library used to find BPR, which can be found at https://github.com/dc74089/frc-power-calc.
-        \n\n\nCreated with pigs and rockets by Exploding Bacon, FRC Team 1902.
+        \n\nThe BPR app is open-source: \n\nhttps://github.com/dc74089/jen-scout\n\nThe app is a thin Android wrapper around an open-source Java library used to find BPR, which can be found here: \n\nhttps://github.com/dc74089/frc-power-calc.
+        \n\n\nCreated with 🐷, 🚀, and ❤ by Exploding Bacon, FRC Team 1902.
     </string>
 </resources>
