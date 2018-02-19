@@ -55,6 +55,8 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
     Dialog yearDialog, compDialog, statDialog;
     ProgressDialog pd;
 
+    String SWITCH_DPR_TEXT = "switchDpr";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +194,13 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    //Special Cases
+                    if (stat.getText().toString().equals(SWITCH_DPR_TEXT)) {
+                        Map<Integer, Double> results = calc.getForSupplierSorted(switchDprProvider);
+                        handleResults(results);
+                        return;
+                    }
+
                     try {
                         Map<Integer, Double> results = calc.getForKeySorted(stat.getText().toString());
                         handleResults(results);
@@ -221,9 +230,16 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private BPRCalculator.MetricProvider switchDprProvider = new BPRCalculator.MetricProvider() {
+        @Override
+        public double get(Map<String, String> map, Map<String, String> map1) {
+            return Double.parseDouble(map1.get("teleopSwitchOwnershipSec"));
+        }
+    };
+
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        if(dialogInterface.equals(compDialog)) {
+        if (dialogInterface.equals(compDialog)) {
             final EventSimple e = (EventSimple) nameEventMap.values().toArray()[i];
             comp.setText(e.getName());
 
@@ -270,7 +286,23 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
                         stats.add("opr");
                         stats.add("dpr");
                         stats.add("ccwm");
-                        stats.addAll(calc.getStats());
+
+                        if (year.getText().toString().equals("2018")) {
+                            stats.add(SWITCH_DPR_TEXT);
+                        }
+
+                        try {
+                            stats.addAll(calc.getStats());
+                        } catch (NullPointerException e) { //FIXME: Hacky way to fix no matches crashing app
+                            e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    comp.setText("");
+                                }
+                            });
+                            return;
+                        }
 
                         PowerRatings.this.runOnUiThread(new Runnable() {
                             @Override
