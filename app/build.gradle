@@ -21,8 +21,8 @@ android {
         applicationId "com.vegetarianbaconite.jenscout"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 11
-        versionName "2018.1"
+        versionCode 12
+        versionName "2018.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
