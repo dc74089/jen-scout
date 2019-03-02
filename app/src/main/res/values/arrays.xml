@@ -9,6 +9,8 @@
     </array>
 
     <array name="events">
+        <item>2019 Palmetto Regional</item>
+        <item>2019 Orlando Regional</item>
         <item>2018 Orlando Regional</item>
         <item>2018 South FL Regional</item>
         <item>2017 Orlando Regional</item>
@@ -22,6 +24,8 @@
     </array>
 
     <array name="eventKeys">
+        <item>2019scmb</item>
+        <item>2019flor</item>
         <item>2018flor</item>
         <item>2018flwp</item>
         <item>2017flor</item>
