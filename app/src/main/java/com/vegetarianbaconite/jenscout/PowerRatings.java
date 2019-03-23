@@ -24,7 +24,6 @@ import com.crashlytics.android.answers.SearchEvent;
 import com.vegetarianbaconite.powercalc.BPRCalculator;
 import com.vegetarianbaconite.powercalc.exceptions.NoMatchesException;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,6 +55,12 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
     ProgressDialog pd;
 
     String SWITCH_DPR_TEXT = "switchDpr";
+    private BPRCalculator.MetricProvider switchDprProvider = new BPRCalculator.MetricProvider() {
+        @Override
+        public double get(Map<String, String> map, Map<String, String> map1) {
+            return Double.parseDouble(map1.get("teleopSwitchOwnershipSec"));
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +159,7 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             }
 
             try {
-                api.getEventsByYearSimpleAsync(new BigDecimal(year.getText().toString()), null,
+                api.getEventsByYearSimpleAsync(Integer.parseInt(year.getText().toString()), null,
                         this);
             } catch (ApiException e) {
                 e.printStackTrace();
@@ -229,13 +234,6 @@ public class PowerRatings extends AppCompatActivity implements View.OnClickListe
             }).start();
         }
     }
-
-    private BPRCalculator.MetricProvider switchDprProvider = new BPRCalculator.MetricProvider() {
-        @Override
-        public double get(Map<String, String> map, Map<String, String> map1) {
-            return Double.parseDouble(map1.get("teleopSwitchOwnershipSec"));
-        }
-    };
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {

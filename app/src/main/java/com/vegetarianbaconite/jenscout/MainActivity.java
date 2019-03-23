@@ -16,17 +16,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTeam = (Button) findViewById(R.id.homeSetTeam);
-        teamNo = (TextView) findViewById(R.id.homeTeam);
+        setTeam = findViewById(R.id.homeSetTeam);
+        teamNo = findViewById(R.id.homeTeam);
 
         setTeam.setOnClickListener(this);
-
-        findViewById(R.id.homeSingle).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, SingleMatchFinder.class));
-            }
-        });
 
         findViewById(R.id.homePower).setOnClickListener(new View.OnClickListener() {
             @Override
